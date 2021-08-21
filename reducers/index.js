@@ -5,6 +5,7 @@ const initialState = {
   	time:0,
   	
   	generateSequence: function(length,nback, percentageOfHits){
+
   		var targetNumber = Math.floor(length*percentageOfHits);
   		var finalArray;
   		//gives you a random number between the min and max, inclusive
@@ -18,7 +19,8 @@ const initialState = {
 			}
 		// CheckHitNumber checks how many matches are in an array once supplied with an array of numbers and the n back number
 		function checkHitNumber (arr,nback) {
-			var checkArray = [...arr];
+
+			var checkArray = arr.map(a=>a);
 			var numOfHits = 0;
 			for (var i = 0; i< checkArray.length-nback; i++) {
 				if (checkArray[i] === checkArray[i+nback] && Number.isInteger(checkArray[i])) {
@@ -29,7 +31,35 @@ const initialState = {
 
 			return numOfHits;
 		}
+		function createArrayOfHits (arr,nback) {
+			var checkArray = arr.map(a=>a);
+			var listOfHitsArray = [];
+			var numOfHits = 0;
+			for (var i = 0; i< checkArray.length-nback; i++) {
+				if (checkArray[i] === checkArray[i+nback] && Number.isInteger(checkArray[i])) {
 
+					listOfHitsArray.push(i);
+				}
+			}
+
+			return listOfHitsArray;
+		}
+		function checkIfHitAndSwitch (arr,nback) {
+
+			var checkArray = arr.map(a=>a);
+
+			var listOfHitsArray = createArrayOfHits(checkArray,nback);
+			var locationInArray = listOfHitsArray[randomIntFromInterval(0,listOfHitsArray.length-1)];
+			var oldValue = checkArray[locationInArray];
+
+			while (checkArray[locationInArray] === oldValue) {
+				
+				checkArray[locationInArray] = randomIntFromInterval(0,9);
+
+			}
+
+			return checkArray;
+		}
 		//fillArray adds nback hits in random spots until it reaches a certain amount
 		function fillArray(arr,nback) {
 
@@ -49,7 +79,7 @@ const initialState = {
 
 			} else if (checkHitNumber(seqArrayFill,nback) > targetNumber) {
 				//if there are too many hits random change the sequence
-				seqArrayFill[seqSpot+nback] = seqItem;
+				seqArrayFill = checkIfHitAndSwitch(seqArrayFill,nback);
 				return fillArray(seqArrayFill,nback);
 			} else {
 				// if just right return the array
@@ -61,8 +91,10 @@ const initialState = {
 		}
 		finalArray = fillArray(seqArray, nback);
 
+		//console.log(createArrayOfHits(finalArray, nback))
 
-  		return seqArray;
+  		return finalArray;
+
   	},
   	sequence:[],
   },

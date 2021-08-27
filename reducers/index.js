@@ -3,7 +3,15 @@ const initialState = {
   	size:0,
   	timer:0,
   	time:0,
-  	
+  	startTime:0,
+  	timeElapsed:0,
+  	matrix:[0,0,0,0,0,0,0,0,0],
+  	sequence:[],
+  	correct:0,
+  	incorrect:0,
+  	nbackLevel:1,
+  	isItOn:true,
+  	interval:1000,
   	generateSequence: function(length,nback, percentageOfHits){
 
   		var targetNumber = Math.floor(length*percentageOfHits);
@@ -15,7 +23,7 @@ const initialState = {
 			var seqArray = [];
 
 			for (var i = 0; i< length; i++) {
-				seqArray.push(randomIntFromInterval(0,9));
+				seqArray.push(randomIntFromInterval(0,8));
 			}
 		// CheckHitNumber checks how many matches are in an array once supplied with an array of numbers and the n back number
 		function checkHitNumber (arr,nback) {
@@ -54,7 +62,7 @@ const initialState = {
 
 			while (checkArray[locationInArray] === oldValue) {
 				
-				checkArray[locationInArray] = randomIntFromInterval(0,9);
+				checkArray[locationInArray] = randomIntFromInterval(0,8);
 
 			}
 
@@ -67,7 +75,7 @@ const initialState = {
 			var seqArrayFill = [...arr];
 			var numOfHits = 0;
 			var seqSpot = randomIntFromInterval(0,seqArrayFill.length-nback-1);
-			var seqItem = randomIntFromInterval(0,9);
+			var seqItem = randomIntFromInterval(0,8);
 
 
 			if (checkHitNumber(seqArrayFill,nback) < targetNumber) {
@@ -96,23 +104,66 @@ const initialState = {
   		return finalArray;
 
   	},
-  	sequence:[],
+  	
   },
 };
 
+function checkIfCorrect (sequence, nback, step) {
+
+}
+
 const rootReducer = (state = initialState, action) => {
 	console.log(action.type);
+	var matrix = [0,0,0,0,0,0,0,0,0];
+	var timer = state.nback.timer;
+	var timeElapsed = 0;
+	var step = 0;
+	var stepLength = 3000;
+	var halfStep = 0;
+	var remainder = 0;
   switch (action.type) {
-
+  	
     case "CLICK":
-      return {...state};
+    return {...state};
+
+    case "NBACKCLICK":
+
+    checkIfCorrect(state.nback.sequence,state.nback.nbackLevel,state.nback.step);
+
+
+    return {...state}
     case "NBACK":
+
+    if (state.nback.isItOn && state.nback.time > 0) {
+    timer++;
+    // increment only when it's on
+    timeElapsed = state.nback.time-state.nback.startTime;
+    // find the elapsed amount of time since the 'time' was defined
+    step = Math.floor(timeElapsed/stepLength);
+    // find out what step of the sequence we're on
+    halfStep = stepLength/2;
+    // define the length of a half step
+    remainder = timeElapsed % stepLength;
+    // find how much time has elapsed between steps
+
+
+   	matrix = state.nback.matrix.map((x,i)=>{
+    	return 0;
+    })
+   	    if (remainder > halfStep) {
+    	// if we're already more than halfway to the next step, then erase do nothing, which will lead to an empty grid display state ie [0,0,0,0,0,0,0,0,0]
+    } else {
+    	matrix[state.nback.sequence[step]] = 1;
+    	// if it's less than halfway to the next step display blink the appropriate grid tile
+    }
+    
+    }
 
 
     	//add state with payload - payload.key tells what state object key to change - value is the value to be set for that state object key
 
 
-      return {...state, nback:{...state.nback, [action.payload.key]:action.payload.value}};
+      return {...state, nback:{...state.nback, [action.payload.key]:action.payload.value, ["timer"]:timer,timeElapsed:timeElapsed,matrix:matrix }};
     default:
     console.log(action.type);
       return state;

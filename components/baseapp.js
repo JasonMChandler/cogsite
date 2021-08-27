@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux'
 export default function BaseApp(props) {
   const state = useSelector((state) => state)
   const dispatch = useDispatch()
+
+
 	  return (
         <div className="container">
       <Head>
@@ -35,6 +37,16 @@ export default function BaseApp(props) {
         * {
           box-sizing: border-box;
         }
+        .boxesdefault {
+        background-color: #d9d9d9;
+
+        }
+        .boxeslit {
+        background-color: #bd874d;
+
+
+        }
+
       `}</style>
     </div>) 
 	}

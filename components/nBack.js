@@ -15,7 +15,7 @@ export default function nBack(props) {
 
 
 
-            dispatch({ type: "NBACK", payload: { key: "sequence", value: state.generateSequence(32,3,.40)} })
+            dispatch({ type: "NBACK", payload: { key: "sequence", value: state.generateSequence(32,state.nbackLevel,.40)} })
 
             dispatch({ type: "NBACK", payload: { key: "startTime", value: Date.now()} })
     }, [])
@@ -34,23 +34,23 @@ export default function nBack(props) {
 
 
 
-    return (<Grid style={{width:(() => {return state.largerDimension === "height" ? state.width : state.height})(), height:(() => {return state.largerDimension === "height" ? state.width : state.height})()}} container><Grid onClick={() => dispatch({type:"NBACK", payload:{key:"size",value:state.size+1}})} justifyContent="space-around" alignItems="center" container>
-    	<Grid item><div onClick={() => dispatch({ type: "NBACKCLICK", payload: { key: "boxClick", value: 0} })} className={state.matrix[0] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
-    	<Grid item><div onClick={() => dispatch({ type: "NBACKCLICK", payload: { key: "boxClick", value: 1} })} className={state.matrix[1] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
-    	<Grid item><div onClick={() => dispatch({ type: "NBACKCLICK", payload: { key: "boxClick", value: 2} })} className={state.matrix[2] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
+    return (<Grid onClick={() => dispatch({ type: "NBACKCLICK", payload: { key: "boxClick", value: 0} })} style={{width:(() => {return state.largerDimension === "height" ? state.width : state.height})(), height:(() => {return state.largerDimension === "height" ? state.width : state.height})()}} container><Grid onClick={() => dispatch({type:"NBACK", payload:{key:"size",value:state.size+1}})} justifyContent="space-around" alignItems="center" container>
+    	<Grid item><div className={state.matrix[0] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
+    	<Grid item><div className={state.matrix[1] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
+    	<Grid item><div className={state.matrix[2] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
     	</Grid>
 
     	<Grid onClick={() => dispatch({type:"NBACK", payload:{key:"size",value:state.size+1}})} justifyContent="space-around" alignItems="center" container>
-    	<Grid item><div onClick={() => dispatch({ type: "NBACKCLICK", payload: { key: "boxClick", value: 3} })} className={state.matrix[3] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
-    	<Grid item><div onClick={() => dispatch({ type: "NBACKCLICK", payload: { key: "boxClick", value: 4} })} className={state.matrix[4] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
-    	<Grid item><div onClick={() => dispatch({ type: "NBACKCLICK", payload: { key: "boxClick", value: 5} })} className={state.matrix[5] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
+    	<Grid item><div className={state.matrix[3] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
+    	<Grid item><div className={state.matrix[4] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
+    	<Grid item><div className={state.matrix[5] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
     	</Grid>
 
 
     	<Grid onClick={() => dispatch({type:"NBACK", payload:{key:"size",value:state.size+1}})} justifyContent="space-around" alignItems="center" container>
-    	<Grid item><div onClick={() => dispatch({ type: "NBACKCLICK", payload: { key: "boxClick", value: 6} })} className={state.matrix[6] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
-    	<Grid item><div onClick={() => dispatch({ type: "NBACKCLICK", payload: { key: "boxClick", value: 7} })} className={state.matrix[7] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
-    	<Grid item><div onClick={() => dispatch({ type: "NBACKCLICK", payload: { key: "boxClick", value: 8} })} className={state.matrix[8] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
+    	<Grid item><div className={state.matrix[6] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
+    	<Grid item><div className={state.matrix[7] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
+    	<Grid item><div className={state.matrix[8] === 0 ? "boxesdefault" : "boxeslit"} style={{width:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})(),height:(() => {return state.largerDimension === "height" ? (state.width - 30)/3 : (state.height - 30)/3})()}} square={true}></div></Grid>
     	</Grid>
 
 

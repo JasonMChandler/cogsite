@@ -11,7 +11,11 @@ const initialState = {
   	incorrect:0,
   	nbackLevel:1,
   	isItOn:true,
-  	interval:1000,
+  	interval:50,
+  	stepLength:4000,
+  	correctBlock:-1,
+  	currentBlock:-1,
+  	previousStep:-1,
   	generateSequence: function(length,nback, percentageOfHits){
 
   		var targetNumber = Math.floor(length*percentageOfHits);
@@ -108,9 +112,7 @@ const initialState = {
   },
 };
 
-function checkIfCorrect (sequence, nback, step) {
 
-}
 
 const rootReducer = (state = initialState, action) => {
 	console.log(action.type);
@@ -118,20 +120,32 @@ const rootReducer = (state = initialState, action) => {
 	var timer = state.nback.timer;
 	var timeElapsed = 0;
 	var step = 0;
-	var stepLength = 3000;
+	var stepLength = state.nback.stepLength;
 	var halfStep = 0;
 	var remainder = 0;
+	var correctBlock = state.nback.correctBlock;
+	var nbackClickReturnValue = {...state};
+	var currentBlock = -1;
+	var lock = state.nback.lock;
   switch (action.type) {
   	
     case "CLICK":
     return {...state};
 
     case "NBACKCLICK":
+    if (state.nback.correctBlock !== -1 && state.nback.lock !== true) {
 
-    checkIfCorrect(state.nback.sequence,state.nback.nbackLevel,state.nback.step);
+        if (state.nback.currentBlock === state.nback.correctBlock) {
+        	nbackClickReturnValue = {...state, nback:{...state.nback, lock:true, correct: state.nback.correct+1}};
+    	} else {
+    		nbackClickReturnValue = {...state, nback:{...state.nback, lock:true, incorrect: state.nback.incorrect+1}};
+    	}
+
+    }
 
 
-    return {...state}
+
+    return nbackClickReturnValue;
     case "NBACK":
 
     if (state.nback.isItOn && state.nback.time > 0) {
@@ -154,16 +168,22 @@ const rootReducer = (state = initialState, action) => {
     	// if we're already more than halfway to the next step, then erase do nothing, which will lead to an empty grid display state ie [0,0,0,0,0,0,0,0,0]
     } else {
     	matrix[state.nback.sequence[step]] = 1;
+    	correctBlock = state.nback.sequence[step-state.nback.nbackLevel];
     	// if it's less than halfway to the next step display blink the appropriate grid tile
     }
-    
+    currentBlock = state.nback.sequence[step];
+
+    // nback.lock makes sure you can't do more than one incorrect or correct answer per step this unlocks at a new step
+    if (state.nback.previousStep !== step) {
+    	lock = false;
+    }
     }
 
 
     	//add state with payload - payload.key tells what state object key to change - value is the value to be set for that state object key
 
 
-      return {...state, nback:{...state.nback, [action.payload.key]:action.payload.value, ["timer"]:timer,timeElapsed:timeElapsed,matrix:matrix }};
+      return {...state, nback:{...state.nback, [action.payload.key]:action.payload.value, ["timer"]:timer,timeElapsed:timeElapsed,matrix:matrix,correctBlock:correctBlock,currentBlock:currentBlock,previousStep:step,lock:lock }};
     default:
     console.log(action.type);
       return state;
